@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "AnchorOne",
+    "slug": "anchorone",
+    "scheme": "anchorone",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anchorone.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#14B8A6"
+      },
+      "package": "com.anchorone.app"
+    },
+    "web": {
+      "favicon": "./assets/icon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "AnchorOne - Recovery Companion",
+      "shortName": "AnchorOne",
+      "description": "A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.",
+      "lang": "en",
+      "themeColor": "#14B8A6",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-font",
+      "expo-web-browser"
+    ]
+  }
+}

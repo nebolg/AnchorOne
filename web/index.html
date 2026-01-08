@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Primary Meta Tags -->
+    <title>AnchorOne - Recovery Companion</title>
+    <meta name="title" content="AnchorOne - Recovery Companion">
+    <meta name="description"
+        content="A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#14B8A6">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="AnchorOne">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon.png">
+    <link rel="apple-touch-icon" href="./assets/icon.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nebolg.github.io/AnchorOne/">
+    <meta property="og:title" content="AnchorOne - Recovery Companion">
+    <meta property="og:description"
+        content="A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.">
+    <meta property="og:image" content="./assets/logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://nebolg.github.io/AnchorOne/">
+    <meta property="twitter:title" content="AnchorOne - Recovery Companion">
+    <meta property="twitter:description"
+        content="A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.">
+    <meta property="twitter:image" content="./assets/logo.png">
+
+    <!-- AdSense Placeholder (uncomment when ready) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+    <style>
+        /* Loading screen styles */
+        html,
+        body,
+        #root {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffffff;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+        }
+
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-text {
+            color: #14B8A6;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(0.98);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <!-- Loading screen while app loads -->
+        <div class="loading-container">
+            <img class="loading-logo" src="./assets/logo.png" alt="AnchorOne Logo">
+            <div class="loading-text">Loading AnchorOne...</div>
+        </div>
+    </div>
+
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then((registration) => {
+                        console.log('[SW] Registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('[SW] Registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>

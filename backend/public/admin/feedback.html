@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnchorOne - Feedback Admin</title>
+    <style>
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-card: #334155;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --teal: #14B8A6;
+            --orange: #F97316;
+            --blue: #3B82F6;
+            --green: #10B981;
+            --red: #EF4444;
+            --purple: #8B5CF6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--bg-card);
+            margin-bottom: 24px;
+        }
+        h1 { font-size: 24px; display: flex; align-items: center; gap: 12px; }
+        h1 span { color: var(--teal); }
+        .auth-section { display: flex; gap: 12px; align-items: center; }
+        #adminKey {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card);
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            width: 200px;
+        }
+        .btn {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-secondary { background: var(--bg-secondary); }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-value { font-size: 32px; font-weight: 700; }
+        .stat-label { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+        .stat-pending .stat-value { color: var(--orange); }
+        .stat-reviewed .stat-value { color: var(--blue); }
+        .stat-implemented .stat-value { color: var(--green); }
+        
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--bg-secondary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .filter-btn.active { background: var(--teal); color: white; }
+        
+        .feedback-list { display: flex; flex-direction: column; gap: 16px; }
+        .feedback-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--teal);
+        }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .feedback-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .type-bug { background: #EF444420; color: var(--red); }
+        .type-feature { background: #F5920B20; color: var(--orange); }
+        .type-improvement { background: #10B98120; color: var(--green); }
+        .type-content { background: #3B82F620; color: var(--blue); }
+        .type-other { background: #8B5CF620; color: var(--purple); }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-pending { background: #F5920B20; color: var(--orange); }
+        .status-reviewed { background: #3B82F620; color: var(--blue); }
+        .status-implemented { background: #10B98120; color: var(--green); }
+        .status-closed { background: var(--bg-card); color: var(--text-muted); }
+        
+        .feedback-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .feedback-desc { color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+        .feedback-meta {
+            display: flex;
+            gap: 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .feedback-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--bg-card);
+        }
+        .action-btn {
+            background: var(--bg-card);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .action-btn:hover { background: var(--teal); color: white; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state h3 { margin-bottom: 8px; color: var(--text-secondary); }
+        
+        #loginSection { text-align: center; padding: 100px 20px; }
+        #loginSection h2 { margin-bottom: 8px; }
+        #loginSection p { color: var(--text-muted); margin-bottom: 24px; }
+        #loginSection .auth-section { justify-content: center; }
+        
+        .hidden { display: none !important; }
+        
+        .response-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--text-muted);
+            padding: 10px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚓ <span>AnchorOne</span> Feedback Admin</h1>
+            <div class="auth-section" id="headerAuth">
+                <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                <button class="btn" onclick="exportFeedback()">Export JSON</button>
+            </div>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection">
+            <h2>🔐 Developer Access</h2>
+            <p>Enter your admin key to view user feedback</p>
+            <div class="auth-section">
+                <input type="password" id="adminKey" placeholder="Admin Key" />
+                <button class="btn" onclick="login()">Access Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="hidden">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Total Feedback</div>
+                </div>
+                <div class="stat-card stat-pending">
+                    <div class="stat-value" id="statPending">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card stat-reviewed">
+                    <div class="stat-value" id="statReviewed">0</div>
+                    <div class="stat-label">Reviewed</div>
+                </div>
+                <div class="stat-card stat-implemented">
+                    <div class="stat-value" id="statImplemented">0</div>
+                    <div class="stat-label">Implemented</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterFeedback('all')">All</button>
+                <button class="filter-btn" onclick="filterFeedback('pending')">Pending</button>
+                <button class="filter-btn" onclick="filterFeedback('reviewed')">Reviewed</button>
+                <button class="filter-btn" onclick="filterFeedback('implemented')">Implemented</button>
+                <button class="filter-btn" onclick="filterFeedback('closed')">Closed</button>
+            </div>
+
+            <div class="feedback-list" id="feedbackList">
+                <div class="empty-state">
+                    <h3>Loading feedback...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api/feedback';
+        let adminKey = '';
+        let currentFilter = 'all';
+        let feedbackData = [];
+
+        function login() {
+            adminKey = document.getElementById('adminKey').value;
+            if (!adminKey) {
+                alert('Please enter admin key');
+                return;
+            }
+            loadFeedback();
+        }
+
+        function logout() {
+            adminKey = '';
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('headerAuth').classList.add('hidden');
+        }
+
+        async function loadFeedback() {
+            try {
+                const res = await fetch(`${API_URL}/all`, {
+                    headers: { 'x-admin-key': adminKey }
+                });
+                
+                if (!res.ok) {
+                    if (res.status === 403) {
+                        alert('Invalid admin key');
+                        return;
+                    }
+                    throw new Error('Failed to load feedback');
+                }
+
+                const data = await res.json();
+                feedbackData = data.feedback;
+                
+                // Update stats
+                document.getElementById('statTotal').textContent = data.stats.total;
+                document.getElementById('statPending').textContent = data.stats.pending;
+                document.getElementById('statReviewed').textContent = data.stats.reviewed;
+                document.getElementById('statImplemented').textContent = data.stats.implemented;
+
+                // Show dashboard
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('headerAuth').classList.remove('hidden');
+
+                renderFeedback();
+            } catch (error) {
+                alert('Error loading feedback: ' + error.message);
+            }
+        }
+
+        function filterFeedback(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderFeedback();
+        }
+
+        function renderFeedback() {
+            const filtered = currentFilter === 'all' 
+                ? feedbackData 
+                : feedbackData.filter(f => f.status === currentFilter);
+
+            const list = document.getElementById('feedbackList');
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No feedback found</h3>
+                        <p>No feedback matching this filter</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = filtered.map(f => `
+                <div class="feedback-card" style="border-left-color: ${getTypeColor(f.type)}">
+                    <div class="feedback-header">
+                        <span class="feedback-type type-${f.type}">${getTypeLabel(f.type)}</span>
+                        <span class="status-badge status-${f.status}">${f.status.toUpperCase()}</span>
+                    </div>
+                    <div class="feedback-title">${escapeHtml(f.title)}</div>
+                    <div class="feedback-desc">${escapeHtml(f.description)}</div>
+                    <div class="feedback-meta">
+                        <span>📍 ${f.area || 'General'}</span>
+                        <span>📅 ${new Date(f.created_at).toLocaleDateString()}</span>
+                        <span>🆔 #${f.id}</span>
+                    </div>
+                    ${f.response ? `<div class="response-input" style="background: var(--bg-primary);">💬 Response: ${escapeHtml(f.response)}</div>` : ''}
+                    <div class="feedback-actions">
+                        <button class="action-btn" onclick="updateStatus(${f.id}, 'pending')">⏳ Pending</button>
+                        <button class="action-btn" onclick="updateStatus(${f.id}, 'reviewed')">👀 Reviewed</button>
+                        <button class="action-btn" onclick="updateStatus(${f.id}, 'implemented')">✅ Implemented</button>
+                        <button class="action-btn" onclick="updateStatus(${f.id}, 'closed')">🔒 Close</button>
+                        <button class="action-btn" onclick="respondToFeedback(${f.id})">💬 Respond</button>
+                        <button class="action-btn" onclick="deleteFeedback(${f.id})" style="margin-left: auto; color: var(--red);">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getTypeLabel(type) {
+            const labels = { bug: '🐛 Bug', feature: '💡 Feature', improvement: '📈 Improve', content: '📄 Content', other: '💬 Other' };
+            return labels[type] || type;
+        }
+
+        function getTypeColor(type) {
+            const colors = { bug: '#EF4444', feature: '#F97316', improvement: '#10B981', content: '#3B82F6', other: '#8B5CF6' };
+            return colors[type] || '#14B8A6';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                await fetch(`${API_URL}/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                loadFeedback();
+            } catch (error) {
+                alert('Error updating status');
+            }
+        }
+
+        async function respondToFeedback(id) {
+            const response = prompt('Enter your response to this feedback:');
+            if (!response) return;
+            
+            try {
+                await fetch(`${API_URL}/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'reviewed', response })
+                });
+                loadFeedback();
+            } catch (error) {
+                alert('Error sending response');
+            }
+        }
+
+        async function deleteFeedback(id) {
+            if (!confirm('Delete this feedback?')) return;
+            
+            try {
+                await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-admin-key': adminKey }
+                });
+                loadFeedback();
+            } catch (error) {
+                alert('Error deleting feedback');
+            }
+        }
+
+        function exportFeedback() {
+            window.open(`${API_URL}/export?key=${adminKey}`, '_blank');
+        }
+    </script>
+</body>
+</html>

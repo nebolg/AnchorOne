@@ -1,0 +1,31 @@
+{
+    "name": "AnchorOne - Recovery Companion",
+    "short_name": "AnchorOne",
+    "description": "A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#14B8A6",
+    "orientation": "portrait",
+    "scope": "/",
+    "lang": "en",
+    "categories": [
+        "health",
+        "lifestyle",
+        "wellness"
+    ],
+    "icons": [
+        {
+            "src": "./assets/icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./assets/icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
