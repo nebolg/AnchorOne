@@ -38,6 +38,9 @@
       "expo-asset",
       "expo-font",
       "expo-web-browser"
-    ]
+    ],
+    "experiments": {
+      "baseUrl": "/AnchorOne"
+    }
   }
 }

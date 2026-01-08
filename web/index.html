@@ -18,11 +18,11 @@
     <meta name="apple-mobile-web-app-title" content="AnchorOne">
 
     <!-- PWA Manifest -->
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="/AnchorOne/manifest.json">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon.png">
-    <link rel="apple-touch-icon" href="./assets/icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AnchorOne/assets/icon.png">
+    <link rel="apple-touch-icon" href="/AnchorOne/assets/icon.png">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -30,7 +30,7 @@
     <meta property="og:title" content="AnchorOne - Recovery Companion">
     <meta property="og:description"
         content="A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.">
-    <meta property="og:image" content="./assets/logo.png">
+    <meta property="og:image" content="https://nebolg.github.io/AnchorOne/assets/logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
     <meta property="twitter:title" content="AnchorOne - Recovery Companion">
     <meta property="twitter:description"
         content="A safe, anonymous multi-addiction recovery companion app. Track progress, connect with community, and build lasting change.">
-    <meta property="twitter:image" content="./assets/logo.png">
+    <meta property="twitter:image" content="https://nebolg.github.io/AnchorOne/assets/logo.png">
 
     <!-- AdSense Placeholder (uncomment when ready) -->
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
@@ -99,7 +99,7 @@
     <div id="root">
         <!-- Loading screen while app loads -->
         <div class="loading-container">
-            <img class="loading-logo" src="./assets/logo.png" alt="AnchorOne Logo">
+            <img class="loading-logo" src="/AnchorOne/assets/logo.png" alt="AnchorOne Logo">
             <div class="loading-text">Loading AnchorOne...</div>
         </div>
     </div>
@@ -108,7 +108,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
+                navigator.serviceWorker.register('/AnchorOne/service-worker.js')
                     .then((registration) => {
                         console.log('[SW] Registered:', registration.scope);
                     })
